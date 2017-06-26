@@ -1,7 +1,7 @@
-This plugin for Atlassian Bamboo provides a deployment task to deploy CloudFormation templates to Amazon.
+This plugin for Atlassian Bamboo provides a deployment task to deploy CloudFormation templates to Amazon.  (This is a branch that stores the AWS credentials in Hashicorp vault instead of within Bamboo's global plugin settings).
 
 # Setup
-After installing the plugin, log in as a bamboo administrator and from the administration screens, find the `CFN Deployment Admin` link from the left hand menu.  From that screen enter the credentials for the AWS that will be used for deploying CFN templates.
+After installing the plugin, log in as a bamboo administrator and from the administration screens, find the `CFN Deployment Admin` link from the left hand menu.  From that screen enter details for connecting to Vault to pull the AWS credentials be used for deploying CFN templates.
 
 # Usage
 On any deployment project, add a `Deploy CFN Template` task. On that task provide the `stack name` (required) and the `path` to the template files (optional: default is the root/working directory of the deployment project).

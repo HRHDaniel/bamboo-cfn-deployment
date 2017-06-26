@@ -4,6 +4,13 @@ import java.nio.file.Path;
 
 import javax.inject.Inject;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
 import com.amazonaws.services.cloudformation.model.Stack;
 import com.amazonaws.waiters.WaiterUnrecoverableException;
 import com.atlassian.bamboo.build.logger.BuildLogger;
@@ -66,10 +73,28 @@ public class CfnDeploymentTask implements DeploymentTaskType {
 	
 	private CfnDeployer createCfnDeployer() {
 		PluginSettings settings = pluginSettingsFactory.createGlobalSettings();
+		final String vaultUrl = (String) settings.get("CfnDeployment.vaultUrl");
+		final String vaultToken = (String) settings.get("CfnDeployment.vaultToken");
+		final String vaultKeyPath = (String) settings.get("CfnDeployment.vaultKeyPath");
 		
-		final String region = (String) settings.get("CfnDeployment.awsDefaultRegion");
-		final String accessKey = (String) settings.get("CfnDeployment.awsAccessKey");
-		final String secretKey = (String) settings.get("CfnDeployment.awsSecretKey");
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("X-Vault-Token", vaultToken);
+		String url = vaultUrl + "/v1/secret" + vaultKeyPath;
+		
+		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        factory.setReadTimeout(5000);
+        factory.setConnectTimeout(5000);
+		RestTemplate rt = new RestTemplate(factory);
+		
+		HttpEntity<String> request = new HttpEntity<String>("", headers);
+		
+		ResponseEntity<VaultValues> response = rt.exchange(url, HttpMethod.GET, request, VaultValues.class);
+		
+		VaultValues body = response.getBody();
+
+		String region = body.getData().get("AWS_DEFAULT_REGION");
+		String accessKey = body.getData().get("AWS_ACCESS_KEY_ID");
+		String secretKey = body.getData().get("AWS_SECRET_ACCESS_KEY");
 		
 		return CfnDeployer.build(accessKey, secretKey, region);
 	}

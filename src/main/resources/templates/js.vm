@@ -6,7 +6,7 @@ function updateConfig() {
     url: AJS.contextPath() + "/rest/cfn-deployment/1.0/",
     type: "PUT",
     contentType: "application/json",
-    data: '{ "awsAccessKey": "' + AJS.$("#awsAccessKey").attr("value") + '", "awsSecretKey": "' + AJS.$("#awsSecretKey").attr("value") + '", "awsDefaultRegion": "' + AJS.$("#awsDefaultRegion").attr("value") + '" }',
+    data: '{ "vaultUrl": "' + AJS.$("#vaultUrl").attr("value") + '", "vaultToken": "' + AJS.$("#vaultToken").attr("value") + '", "vaultKeyPath": "' + AJS.$("#vaultKeyPath").attr("value") + '" }',
     processData: false
   }).success(function() {
   //alert('here');
@@ -25,9 +25,9 @@ function updateConfig() {
             dataType: "json"
         } ).done(function(config) { // when the configuration is returned...
             // ...populate the form.
-            $("#awsAccessKey").val(config.awsAccessKey);
-			$("#awsSecretKey").val(config.awsSecretKey);
-			$("#awsDefaultRegion").val(config.awsDefaultRegion);
+            $("#vaultUrl").val(config.vaultUrl);
+			$("#vaultToken").val(config.vaultToken);
+			$("#vaultKeyPath").val(config.vaultKeyPath);
 			
 			AJS.$("#admin").submit(function(e) {
 		        e.preventDefault();

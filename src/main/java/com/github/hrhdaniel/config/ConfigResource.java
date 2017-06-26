@@ -57,9 +57,9 @@ public class ConfigResource {
 			public Object doInTransaction() {
 				PluginSettings settings = pluginSettingsFactory.createGlobalSettings();
 				Config config = new Config();
-				config.setAwsAccessKey((String) settings.get("CfnDeployment.awsAccessKey"));
-				config.setAwsSecretKey((String) settings.get("CfnDeployment.awsSecretKey"));
-				config.setAwsDefaultRegion((String) settings.get("CfnDeployment.awsDefaultRegion"));
+				config.setVaultUrl((String) settings.get("CfnDeployment.vaultUrl"));
+				config.setVaultToken((String) settings.get("CfnDeployment.vaultToken"));
+				config.setVaultKeyPath((String) settings.get("CfnDeployment.vaultKeyPath"));
 				return config;
 			}
 		})).build();
@@ -76,9 +76,9 @@ public class ConfigResource {
 		transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction() {
 				PluginSettings pluginSettings = pluginSettingsFactory.createGlobalSettings();
-				pluginSettings.put("CfnDeployment.awsAccessKey", config.getAwsAccessKey());
-				pluginSettings.put("CfnDeployment.awsSecretKey", config.getAwsSecretKey());
-				pluginSettings.put("CfnDeployment.awsDefaultRegion", config.getAwsDefaultRegion());
+				pluginSettings.put("CfnDeployment.vaultUrl", config.getVaultUrl());
+				pluginSettings.put("CfnDeployment.vaultToken", config.getVaultToken());
+				pluginSettings.put("CfnDeployment.vaultKeyPath", config.getVaultKeyPath());
 				return null;
 			}
 		});
@@ -89,34 +89,34 @@ public class ConfigResource {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	public static final class Config {
 		@XmlElement
-		private String awsAccessKey;
+		private String vaultUrl;
 		@XmlElement
-		private String awsSecretKey;
+		private String vaultToken;
 		@XmlElement
-		private String awsDefaultRegion;
+		private String vaultKeyPath;
 
-		public String getAwsAccessKey() {
-			return awsAccessKey;
+		public String getVaultUrl() {
+			return vaultUrl;
 		}
 
-		public void setAwsAccessKey(String awsAccessKey) {
-			this.awsAccessKey = awsAccessKey;
+		public void setVaultUrl(String vaultUrl) {
+			this.vaultUrl = vaultUrl;
 		}
 
-		public String getAwsSecretKey() {
-			return awsSecretKey;
+		public String getVaultToken() {
+			return vaultToken;
 		}
 
-		public void setAwsSecretKey(String awsSecretKey) {
-			this.awsSecretKey = awsSecretKey;
+		public void setVaultToken(String vaultToken) {
+			this.vaultToken = vaultToken;
 		}
 
-		public String getAwsDefaultRegion() {
-			return awsDefaultRegion;
+		public String getVaultKeyPath() {
+			return vaultKeyPath;
 		}
 
-		public void setAwsDefaultRegion(String awsDefaultRegion) {
-			this.awsDefaultRegion = awsDefaultRegion;
+		public void setVaultKeyPath(String vaultKeyPath) {
+			this.vaultKeyPath = vaultKeyPath;
 		}
 	}
 }
