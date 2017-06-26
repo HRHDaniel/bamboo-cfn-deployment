@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>CFN Deployment Admin</title>
+    <meta name="decorator" content="atl.admin">
+    
+    $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+    #include("templates/js.vm")
+ 
+  </head>
+  <body>
+  
+    <form id="admin" name="admin" class="aui" onSubmit="updateConfig(); return false;">
+      <div class="field-group">
+	    <label for="awsAccessKey">AWS Access Key:</label>
+	    <input type="text" id="awsAccessKey" name="awsAccessKey" class="text">
+	  </div>
+	  
+	  <div class="field-group">
+	    <label for="awsSecretKey">AWS Secret Key:</label>
+	    <input type="text" id="awsSecretKey" name="awsSecretKey" class="text">
+	  </div>
+
+	  <div class="field-group">
+	    <label for="awsDefaultRegion">AWS Default Region:</label>
+	    <input type="text" id="awsDefaultRegion" name="awsDefaultRegion" class="text">
+	  </div>
+    
+	  <div class="field-group">
+	    <input type="submit" value="Save" class="button">
+	    <span id="savedMessage" style="display:none; font-weight:bold; color:#00AA33;">Saved</span>
+	  </div>
+	</form>
+  </body>
+</html>

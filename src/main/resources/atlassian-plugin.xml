@@ -1,0 +1,48 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}"
+	plugins-version="2">
+	<plugin-info>
+		<description>${project.description}</description>
+		<version>${project.version}</version>
+		<vendor name="${project.organization.name}" url="${project.organization.url}" />
+		<param name="plugin-icon">images/cfIcon.png</param>
+		<param name="plugin-logo">images/cfLogo.png</param>
+	</plugin-info>
+
+	<!-- add our i18n resource -->
+	<resource type="i18n" name="i18n" location="bamboo-cfn-deployment" />
+
+	<!-- add our web resources -->
+	<web-resource key="bamboo-cfn-deployment-resources" name="bamboo-cfn-deployment Web Resources">
+		<dependency>com.atlassian.auiplugin:ajs</dependency>
+
+		<resource type="download" name="bamboo-cfn-deployment.css"
+			location="/css/bamboo-cfn-deployment.css" />
+		<resource type="download" name="bamboo-cfn-deployment.js" location="/js/bamboo-cfn-deployment.js" />
+		<resource type="download" name="images/" location="/images" />
+		<context>bamboo-cfn-deployment</context>
+	</web-resource>
+
+	<web-item key="bamboo-menu-item" name="CFN Deployment Admin" section="system.admin/plugins"
+		weight="10" application="bamboo">
+		<description>Configuration for the CFN Deployment plugin.</description>
+		<label key="CFN Deployment Admin" />
+		<link linkId="cfn-deployment-admin-link">/plugins/servlet/cfn-deployment/admin</link>
+	</web-item>
+	 
+	<taskType key="cfnDeployTask" name="Deploy CFN Template"
+		class="com.github.hrhdaniel.CfnDeploymentTask">
+		<description>Deploy CloudFormation AWS Template</description>
+		<configuration class="com.github.hrhdaniel.CfnDeploymentConfiguration" />
+		<resource type="freemarker" name="edit"
+			location="templates/cfnDeployConfiguration.ftl" />
+		<resource type="download" name="icon" location="images/taskLogo.png" />
+	</taskType>
+
+	<servlet key="admin-servlet" class="com.github.hrhdaniel.config.AdminServlet">
+		<url-pattern>/cfn-deployment/admin</url-pattern>
+	</servlet>
+
+	<rest key="rest" path="/cfn-deployment" version="1.0">
+		<description>Provides REST resources for the CFN Deployment admin UI.</description>
+	</rest>
+</atlassian-plugin>

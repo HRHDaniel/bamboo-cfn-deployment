@@ -1,0 +1,41 @@
+   <script>
+
+// TODO: we haven't included error checking and we really should be escaping quotes and other special characters when creating our data, but that is left as an exercise for the reader.
+function updateConfig() {
+  AJS.$.ajax({
+    url: AJS.contextPath() + "/rest/cfn-deployment/1.0/",
+    type: "PUT",
+    contentType: "application/json",
+    data: '{ "awsAccessKey": "' + AJS.$("#awsAccessKey").attr("value") + '", "awsSecretKey": "' + AJS.$("#awsSecretKey").attr("value") + '", "awsDefaultRegion": "' + AJS.$("#awsDefaultRegion").attr("value") + '" }',
+    processData: false
+  }).success(function() {
+  //alert('here');
+    AJS.$("#savedMessage").show().delay(1000).fadeOut();
+  });
+}
+
+(function ($) {
+    // form the URL
+    var url = AJS.contextPath() + "/rest/cfn-deployment/1.0/";
+
+    $(document).ready(function() {
+        // request the config information from the server
+        $.ajax( {
+            url: url,
+            dataType: "json"
+        } ).done(function(config) { // when the configuration is returned...
+            // ...populate the form.
+            $("#awsAccessKey").val(config.awsAccessKey);
+			$("#awsSecretKey").val(config.awsSecretKey);
+			$("#awsDefaultRegion").val(config.awsDefaultRegion);
+			
+			AJS.$("#admin").submit(function(e) {
+		        e.preventDefault();
+		        updateConfig();
+		    });
+		})
+    });
+
+})(AJS.$ || jQuery);
+    
+    </script>
